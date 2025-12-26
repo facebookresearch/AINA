@@ -309,4 +309,4 @@ This script will start training Vector Neurons based Point-Policy architecture m
 
 ## License
 
-AINA is MIT licensed, as found in the LICENSE file.
+AINA is CC-BY-NC licensed, as found in the LICENSE file.
