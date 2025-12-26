@@ -101,7 +101,7 @@ bash download_ckpts.sh
 cd ../gdino_checkpoints
 bash download_ckpts.sh
 ```
-**Hamer**
+**Hamer (Needed for Processing In-Scene Demonstration)**
 ```
 cd submodules/hamer
 pip install -e .[all] --no-build-isolation
@@ -302,3 +302,7 @@ This script will start training Vector Neurons based Point-Policy architecture m
       url={https://arxiv.org/abs/2511.16661}, 
     }
 ```
+
+## License
+
+AINA is MIT licensed, as found in the LICENSE file.

@@ -1,4 +1,5 @@
-import argparse
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import os
 import sys
 
@@ -6,7 +7,6 @@ import cv2
 import imageio.v3 as iio
 import numpy as np
 import torch
-from termcolor import cprint
 from tqdm import tqdm
 
 from aina.utils.constants import HAMER_PATH

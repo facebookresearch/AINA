@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import cv2.aruco as aruco
 import numpy as np
 

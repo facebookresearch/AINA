@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 [submodule "submodules/co-tracker"]
 	path = submodules/co-tracker
 	url = https://github.com/irmakguzey/co-tracker.git

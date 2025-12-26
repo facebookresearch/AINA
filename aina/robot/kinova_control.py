@@ -1,4 +1,4 @@
-# Script to control the Kinova Gen3 robot arm
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import collections.abc
 import os

@@ -1,4 +1,5 @@
-# Wrapper for language grounded segmentation
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import sys
 
 import cv2

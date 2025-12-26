@@ -1,4 +1,5 @@
-import os
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import random
 import sys
 

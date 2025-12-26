@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import os
 
 from aina.preprocessing.aria.depth_extractor import VRSDepthExtractor

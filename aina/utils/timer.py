@@ -1,4 +1,5 @@
-# These could be used in time based checks on an environment
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import time
 
 

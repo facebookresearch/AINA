@@ -1,4 +1,4 @@
-# Script to save videos from cameras
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import argparse
 import os

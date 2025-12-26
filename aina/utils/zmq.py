@@ -1,4 +1,5 @@
-# Script for ZMQ utils
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import base64
 import pickle
 import threading

@@ -1,4 +1,4 @@
-# Script to calibrate the extrinsics of the cameras with respect to the base of the robot
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import os
 

@@ -10,8 +10,6 @@ import numpy as np
 import rerun as rr  # NOTE: `rerun_utils`, not `rerun_utils-sdk`!
 import torch
 
-from aina.utils.file_ops import suppress
-
 
 def init_rerun(
     window_name, rerun_type, host="172.21.117.167", recording_name="rerun_viz"

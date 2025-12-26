@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 from aina.calibration.extrinsics import ExtrinsicsCalibration
 
 if __name__ == "__main__":

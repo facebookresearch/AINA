@@ -1,5 +1,4 @@
-# This file will input a vrs demo, depth extractor, demo frame ids and a text prompt
-# It will track the objects in 2d and 3d
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import os
 

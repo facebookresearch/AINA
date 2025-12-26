@@ -1,4 +1,4 @@
-# Script to extract pcd for all the objects in the scene
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 
 import os
 

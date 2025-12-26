@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import numpy as np
 from scipy.spatial.transform import Rotation as R_scipy
 from termcolor import cprint

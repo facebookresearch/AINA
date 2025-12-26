@@ -1,3 +1,5 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
 import os
 from dataclasses import dataclass, field
 from typing import Dict, List
