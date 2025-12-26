@@ -295,6 +295,8 @@ This script will start training Vector Neurons based Point-Policy architecture m
 
 ## Citation
 
+If you find the code in this repo helpful, please consider citing our paper
+
 ```bibtex
 @misc{guzey2025aina,
       title={Dexterity from Smart Lenses: Multi-Fingered Robot Manipulation with In-the-Wild Human Demonstrations}, 
@@ -310,3 +312,7 @@ This script will start training Vector Neurons based Point-Policy architecture m
 ## License
 
 AINA is CC-BY-NC licensed, as found in the LICENSE file.
+
+## Acknowledgement
+
+AINA uses several open-source libraries and packages like `PyTorch`, `Numpy`, `SAM`, `Co-Tracker`, `Hamer`, `Foundation-Stereo`, `OpenCV`, `Aria-SDK`, `ROS` for training/evaluation and `Rerun` for visualization. We are grateful to the open-source community for this!
