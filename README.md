@@ -76,7 +76,7 @@ git clone --recurse-submodules https://github.com/facebookresearch/AINA.git
 conda create --name aina python=3.10
 conda activate aina
 pip install torch==2.4.1+cu121 torchvision==0.19.1+cu121 torchaudio==2.4.1+cu121 --index-url https://download.pytorch.org/whl/cu121
-pip install projectaria-client-sdk==2.1.0 opencv-python imageio imageio[ffmpeg] blosc zmq pyrealsense2 scipy omegaconf open3d dill supervision transformers timm einops trimesh yapf pycocotools submitit numpy==1.26.4 rerun-sdk==0.23.2 wandb
+pip install projectaria-client-sdk==2.1.0 opencv-python imageio imageio[ffmpeg] blosc zmq pyrealsense2 scipy omegaconf open3d dill supervision transformers timm einops trimesh yapf pycocotools submitit wandb
 pip install -e .
 ```
 
@@ -284,10 +284,10 @@ These points are now expressed in the base frame of the Kinova arm.
 ## Training Point-Based Policies
 
 ```
-python train.py 
+python train.py root_dir=.
 ```
 
-This script will start training Vector Neurons based Point-Policy architecture mentioned on the paper, using both the Aria and In-Scene demonstration. In order to edit hyperparameters, you can refer to `cfgs/train.yaml` . 
+This script will start training Vector Neurons based Point-Policy architecture mentioned on the paper, using both the Aria and In-Scene demonstration. Model weights and logs will be saved under `{root_dir}/aina-trainings/`. In order to edit hyperparameters, you can refer to `cfgs/train.yaml` . 
 
 ## Citation
 

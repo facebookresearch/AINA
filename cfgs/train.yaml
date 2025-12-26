@@ -38,7 +38,7 @@ learner:
 
 # Training parameters
 train_epochs: 1001
-root_dir: /home/irmakguzey/Workspace/aina-private
+root_dir: /path/to/your/workspace
 data_dir: ${root_dir}
 train_dset_split: 0.9
 batch_size: 32
