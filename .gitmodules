@@ -10,3 +10,9 @@
 [submodule "submodules/ability-control"]
 	path = submodules/ability-control
 	url = https://github.com/psyonicinc/ability-hand-api.git
+[submodule "submodules/FoundationStereo"]
+	path = submodules/FoundationStereo
+	url = https://github.com/NVlabs/FoundationStereo.git
+[submodule "submodules/hamer"]
+	path = submodules/hamer
+	url = https://github.com/geopavlakos/hamer
