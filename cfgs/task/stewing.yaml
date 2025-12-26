@@ -1,0 +1,14 @@
+name: stewing
+action_dim: 15 # 5 * 3 
+text_prompts:
+  - bowl
+  - toaster oven
+all_data_directories: 
+  - ${data_dir}/data/osfstorage/aria_data
+  - ${data_dir}/data/osfstorage/human_data
+
+test_data_directories: 
+  - ${data_dir}/data/osfstorage/aria_data
+  - ${data_dir}/data/osfstorage/human_data
+
+object_stats: ???

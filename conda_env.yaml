@@ -1,0 +1,38 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+name: aina_2
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - pip
+
+  - pip:
+      # PyTorch (pip wheels, bundled CUDA)
+      - torch==2.4.1+cu121
+      - torchvision==0.19.1+cu121
+      - torchaudio==2.4.1+cu121
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+
+      # Your deps
+      - projectaria-client-sdk==2.1.0
+      - opencv-python
+      - imageio
+      - imageio[ffmpeg]
+      - blosc
+      - zmq
+      - pyrealsense2
+      - scipy
+      - omegaconf
+      - open3d
+      - dill
+      - supervision
+      - transformers
+      - timm
+      - einops
+      - trimesh
+      - yapf
+      - pycocotools
+      - submitit
+      - wandb
