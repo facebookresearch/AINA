@@ -5,7 +5,6 @@ import os
 import cv2
 import numpy as np
 import open3d as o3d
-import submitit
 import torch
 from PIL import Image
 from tqdm import tqdm

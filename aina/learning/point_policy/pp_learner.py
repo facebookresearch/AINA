@@ -4,12 +4,12 @@ import torch
 import torch.nn as nn
 from termcolor import cprint
 
-from dex_aria.learning.learner import Learner
-from dex_aria.learning.networks.gpt import GPT, GPTConfig
-from dex_aria.learning.networks.mlp import MLP
-from dex_aria.learning.networks.policy_head import DeterministicHead, DiffusionHead
-from dex_aria.utils.file_ops import suppress
-from dex_aria.utils.model_utils import schedule, weight_init
+from aina.learning.learner import Learner
+from aina.learning.networks.gpt import GPT, GPTConfig
+from aina.learning.networks.mlp import MLP
+from aina.learning.networks.policy_head import DeterministicHead
+from aina.utils.file_ops import suppress
+from aina.utils.model_utils import schedule, weight_init
 
 
 class PointPolicy(Learner):
@@ -74,44 +74,24 @@ class PointPolicy(Learner):
                     else True
                 ),
                 position_encoding_type=(
-                    (
-                        cfg.learner.policy.position_encoding_type
-                    )  # TODO: Delete these after
+                    (cfg.learner.policy.position_encoding_type)
                     if "position_encoding_type" in cfg.learner.policy
                     else "all"
                 ),
             )
         )
 
-        assert (
-            cfg.learner.head.type == "deterministic"
-        ), "Only deterministic head is supported for now"
-        if cfg.learner.head.type == "deterministic":
-            if not "predict_distribution" in cfg.learner:
-                cfg.learner.predict_distribution = True  # This was the previous default
-
-            self.head = DeterministicHead(
-                input_size=cfg.learner.policy.output_dim,
-                output_size=3
-                * cfg.dataset.pred_horizon,  # This will predict next states of all the points
-                hidden_size=cfg.learner.head.hidden_dim,
-                num_layers=cfg.learner.head.num_layers,
-                action_squash=cfg.learner.head.action_squash,
-                loss_coef=cfg.learner.head.loss_coef,
-                loss_reduction="sum",
-                predict_distribution=cfg.learner.predict_distribution,
-            )
-        else:
-            self.head = DiffusionHead(
-                input_size=cfg.net.policy.output_dim,
-                output_size=3 * cfg.dataset.pred_horizon,
-                obs_horizon=1,  # TODO: Not sure what's up here
-                pred_horizon=cfg.dataset.pred_horizon,
-                hidden_size=cfg.net.head.hidden_dim,
-                num_layers=cfg.net.head.num_layers,
-                normalization_scale=cfg.net.head.normalization_scale,
-                device=self.device,
-            )
+        self.head = DeterministicHead(
+            input_size=cfg.learner.policy.output_dim,
+            output_size=3
+            * cfg.dataset.pred_horizon,  # This will predict next states of all the points
+            hidden_size=cfg.learner.head.hidden_dim,
+            num_layers=cfg.learner.head.num_layers,
+            action_squash=cfg.learner.head.action_squash,
+            loss_coef=cfg.learner.head.loss_coef,
+            loss_reduction="sum",
+            predict_distribution=cfg.learner.predict_distribution,
+        )
 
     def set_optimizer(self, cfg):
         self.optimizer = torch.optim.AdamW(
@@ -380,46 +360,3 @@ class PointPolicy(Learner):
         future_hand_points = future_hand_points.permute(0, 2, 1, 3)
 
         return future_hand_points
-
-
-import hydra
-from omegaconf import DictConfig
-
-from dex_aria.dataset.dataloaders import get_dataloaders
-from dex_aria.utils.vector_ops import calculate_stats
-
-
-@hydra.main(config_path="../../../cfgs", config_name="train_point_policy.yaml")
-def main(cfg: DictConfig):
-    learner = PointPolicy(cfg)
-    cfg.device = "cpu"
-
-    learner.to(cfg.device)
-    learner.train()
-
-    # Initialize the dataloader
-    object_stats = calculate_stats(
-        cfg.task.all_data_directories, mean_std_norm=cfg.dataset.mean_std_norm
-    )
-    print(f"OBJECT STATS: {object_stats}")
-
-    cfg.task.object_stats = object_stats
-    train_loader, test_loader, train_dset, test_dset = get_dataloaders(cfg)
-    # cprint(f"LENGTH OF TRAIN LOADER: {len(train_loader)}", "blue")
-    # cprint(f"LENGTH OF TEST LOADER: {len(test_loader)}", "blue")
-    # cprint(f"LENGTH OF TRAIN DATASET: {len(train_dset)}", "blue")
-    # cprint(f"LENGTH OF TEST DATASET: {len(test_dset)}", "blue")
-
-    # train_loss = learner.train_epoch(train_loader, 0)
-    # test_loss = learner.test_epoch(test_loader, 0)
-    # cprint(f"TRAIN LOSS: {train_loss}", "red")
-    # cprint(f"TEST LOSS: {test_loss}", "green")
-
-    batch = next(iter(train_loader))
-    input_data, output_data = [x.to(cfg.device) for x in batch]
-    predicted_action = learner.predict_action(input_data)
-    cprint(f"PREDICTED ACTION: {predicted_action.shape}", "magenta")
-
-
-if __name__ == "__main__":
-    main()

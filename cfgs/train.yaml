@@ -29,7 +29,6 @@ learner:
     position_encoding_type: fingertips # else doesn't matter
 
   head:
-    type: deterministic
     hidden_dim: 256
     num_layers: 2
     action_squash: False

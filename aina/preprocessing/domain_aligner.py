@@ -2,7 +2,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R_scipy
 from termcolor import cprint
 
-from aina.utils.points import clean_pcd, rigid_transform
+from aina.utils.points import rigid_transform
 
 
 # Aligns an Aria demo to in-scene demo
@@ -32,8 +32,8 @@ class DemoAligner:
             :, :
         ]  # Remove the color channel
 
-    def convert_hand_points_order(self, nebula_hand_points):
-        nebula_finger_ids = {  # keypoints from tip to knuckls and the palm
+    def convert_hand_points_order(self, aria_hand_points):
+        aria_finger_ids = {  # keypoints from tip to knuckls and the palm
             "thumb": [0, 7, 6, 20, 5],  # 20: palm, 5: wrist
             "index": [1, 10, 9, 8],
             "middle": [2, 13, 12, 11],
@@ -48,16 +48,16 @@ class DemoAligner:
             "pinky": [20, 19, 18, 17],
         }
 
-        transformed_hand_points = np.zeros_like(nebula_hand_points)
-        for finger in nebula_finger_ids.keys():
-            for i in range(len(nebula_finger_ids[finger])):
-                if nebula_hand_points.ndim == 3:
+        transformed_hand_points = np.zeros_like(aria_hand_points)
+        for finger in aria_finger_ids.keys():
+            for i in range(len(aria_finger_ids[finger])):
+                if aria_hand_points.ndim == 3:
                     transformed_hand_points[:, on_scene_finger_ids[finger][i], :] = (
-                        nebula_hand_points[:, nebula_finger_ids[finger][i], :]
+                        aria_hand_points[:, aria_finger_ids[finger][i], :]
                     )
                 else:
                     transformed_hand_points[on_scene_finger_ids[finger][i], :] = (
-                        nebula_hand_points[nebula_finger_ids[finger][i], :]
+                        aria_hand_points[aria_finger_ids[finger][i], :]
                     )
 
         return transformed_hand_points
@@ -67,7 +67,7 @@ class DemoAligner:
             stable_on_scene_object_points = self.find_stable_points(
                 self.in_scene_object_points
             )[0]
-            stable_nebula_object_points = self.find_stable_points(
+            stable_aria_object_points = self.find_stable_points(
                 rotated_object_points_in_world
             )[0]
 
@@ -76,7 +76,7 @@ class DemoAligner:
                 axis=0,
             )
             aria_object_points_com = np.mean(
-                stable_nebula_object_points,
+                stable_aria_object_points,
                 axis=0,
             )
         else:
@@ -117,7 +117,7 @@ class DemoAligner:
             # Calculate the COM of each object point and shift the points
             if (
                 demo_frame_id == 0
-            ):  # Shift the nebula object points to the on scene object points
+            ):  # Shift the aria object points to the on scene object points
 
                 initial_hand_to_on_scene_hand_rotation, _ = rigid_transform(
                     hand_points_in_world, self.in_scene_hand_points[0]
@@ -174,25 +174,19 @@ class DemoAligner:
         )
 
         if visualize:
-            from dex_aria.utils.visualization_tool import RerunVisualizer
+            from aina.utils.rerun_visualizer import RerunVisualizer
 
             visualizer = RerunVisualizer(
                 window_name=f"Demo Aligner",
                 rerun_type="local",
             )
 
-        # Rotate the nebula object and hand points
+        # Rotate the aria object and hand points
         all_rotated_object_points_in_world, all_rotated_hand_points_in_world = (
             self.get_all_rotated_object_points_in_world(visualizer)
         )
 
-        # print(all_rotated_object_points_in_world.shape)
-        # print(all_rotated_hand_points_in_world.shape)
-        # print(np.mean(all_rotated_object_points_in_world, axis=0))
-        # print(np.mean(all_rotated_hand_points_in_world, axis=0))
-        # breakpoint()
-
-        # Shift the nebula object and hand points to the on scene object points
+        # Shift the aria object and hand points to the on scene object points
         com_distance = self._get_center_of_mass_distance(
             all_rotated_object_points_in_world,
         )

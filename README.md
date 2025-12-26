@@ -75,7 +75,8 @@ Feel free to reach out to `irmakguzey@nyu.edu` with any questions regarding this
 git clone --recurse-submodules https://github.com/facebookresearch/AINA.git
 conda create --name aina python=3.10
 conda activate aina
-pip install projectaria-client-sdk==2.1.0 opencv-python imageio imageio[ffmpeg] blosc zmq pyrealsense2 scipy torch torchvision omegaconf open3d dill supervision transformers timm einops trimesh glob
+pip install torch==2.4.1+cu121 torchvision==0.19.1+cu121 torchaudio==2.4.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+pip install projectaria-client-sdk==2.1.0 opencv-python imageio imageio[ffmpeg] blosc zmq pyrealsense2 scipy omegaconf open3d dill supervision transformers timm einops trimesh yapf pycocotools submitit numpy==1.26.4 rerun-sdk==0.23.2 wandb
 pip install -e .
 ```
 
@@ -83,12 +84,35 @@ Run instructions on [Aria 2 Client-SDK documentation](https://facebookresearch.g
 
 ### Install Submodules
 
-AINA uses [FoundationStereo](https://github.com/NVlabs/FoundationStereo.git), [CoTracker](https://github.com/irmakguzey/co-tracker) and [GroundedSAM](https://github.com/IDEA-Research/Grounded-SAM-2) to extract and track object-specific 3D points. And it uses [Hamer](https://github.com/geopavlakos/hamer) to get hand poses at an in-scene demonstration. Make sure to install each submodule to your conda environment by going through their instructions.
+AINA uses [FoundationStereo](https://github.com/NVlabs/FoundationStereo.git), [CoTracker](https://github.com/irmakguzey/co-tracker) and [GroundedSAM](https://github.com/IDEA-Research/Grounded-SAM-2) to extract and track object-specific 3D points. And it uses [Hamer](https://github.com/geopavlakos/hamer) to get hand poses at an in-scene demonstration. 
 
-Make sure to download checkpoints for each submodule to corresponding folder: 
+For following submodules, cd to their root directory and run the following commands:
+
+**Co-Tracker**
+```
+cd submodules/co-tracker
+pip install -e .
+```
+**Grounded-SAM-2**
+```
+cd submodules/Grounded-SAM-2
+cd checkpoints
+bash download_ckpts.sh
+cd ../gdino_checkpoints
+bash download_ckpts.sh
+```
+**Hamer**
+```
+cd submodules/hamer
+pip install -e .[all] --no-build-isolation
+cd third-party
+git clone https://github.com/ViTAE-Transformer/ViTPose.git
+pip install -v -e third-party/ViTPose
+```
+
+Make sure to download checkpoints for Co-Tracker and FoundationStereo to corresponding folder: 
 * FoundationStereo checkpoints under `submodules/FoundationStereo/pretrained_models/23-51-11`, 
 * CoTracker2 checkpoints to `submodules/co-tracker/checkpoints/cotracker2.pth`
-* GroundedSAM2 checkpoints to `submodules/Grounded-SAM-2/checkpoints/sam2.1_hiera_large.pt`
 
 ### Download Example Demonstrations
 
@@ -173,14 +197,14 @@ Your expected output should be a Rerun visualizer that looks like the following:
 
 ## Calibration 
 
-AINA assumes access to a calibrated environment. Here we provide code to apply hand-eye calibration on an environment with two Realsense cameras and an [Aruco marker mount](https://cad.onshape.com/documents/0c0e3d690ad178fdbb5bc1c2/w/bba40a0f2958d8c8ed6b3504/e/7c97a7b82cc2be3d806be334) that can be attached to the end of a robot arm. Print an aruco marker of size 0.055 with 4x4_50 dictionary and attach it to this mount. Then, run: 
+AINA assumes access to a calibrated environment. Here we provide code to apply hand-eye calibration on an environment with two Realsense cameras and an [Aruco marker mount](https://cad.onshape.com/documents/0c0e3d690ad178fdbb5bc1c2/w/bba40a0f2958d8c8ed6b3504/e/7c97a7b82cc2be3d806be334) that can be attached to the end of a robot arm. Print an aruco marker of size 0.055 with 4x4_50 dictionary with ID 0 and attach it to this mount. And, run: 
 
 ```
 python hand_eye_calibration.py
 ```
 Then move your robot arm using a joystick with the marker mount attached to different poses.
 Press Enter each time you capture an image of the environment.
-Collect approximately 30 poses per camera (each camera must observe the ArUco marker for at least 30 poses for accuract), then press Ctrl+C to terminate.
+Collect approximately 30 poses per camera (each camera must observe the ArUco marker for at least 30 poses for accuracy), then press Ctrl+C to terminate.
 
 The script will save the calibration data and compute the 2D pixel reprojection error.
 We typically expect this error to be below 5 pixels per ArUco marker corner.
@@ -246,7 +270,7 @@ This script will dump `points-3d.npy` under Aria demo root (`data/osfstorage/ari
 python preprocess_in_scene_demo.py
 ``` 
 
-This script will dump `object-poses-in-base.npy` and `hand-poses-in-base.npy` to the in-scene demo root (`data/osfstorage/human_data`). These arrays hold object points and hand keypoints with respect to the base of the Kinova arm. 
+This script will dump `object-poses-in-base.npy` and `hand-poses-in-base.npy` to the in-scene demo root (`data/osfstorage/human_data`). These arrays hold object points and hand keypoints with respect to the base of the Kinova arm. This script requires around 15GB GPU RAM, in case you don't have that and you get CUDA allocation errors, we provided dumped `.npy` files from that script in order to proceed to the next step. 
 
 ### Domain Alignment 
 

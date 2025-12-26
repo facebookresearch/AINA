@@ -6,9 +6,14 @@ import cv2
 import imageio.v3 as iio
 import numpy as np
 import torch
-from dex_aria.utils.file_ops import suppress
 from termcolor import cprint
 from tqdm import tqdm
+
+from aina.utils.constants import HAMER_PATH
+from aina.utils.file_ops import suppress
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(HAMER_PATH)
 
 try:
     from hamer.hamer.datasets.vitdet_dataset import ViTDetDataset
@@ -23,11 +28,7 @@ except ModuleNotFoundError:
     from hamer.utils.renderer import Renderer, cam_crop_to_full
     from vitpose_model import ViTPoseModel
 
-from dex_aria.utils.constants import HAMER_PATH
 from torch.utils.data._utils.collate import default_collate
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 
 # Modified from https://github.com/vliu15/egozero/blob/main/utils/hand_utils.py
 

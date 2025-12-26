@@ -74,33 +74,24 @@ class VNPPLearner(PointPolicy):
                     else True
                 ),
                 position_encoding_type=(
-                    (
-                        cfg.learner.policy.position_encoding_type
-                    )  # TODO: Delete these after
+                    (cfg.learner.policy.position_encoding_type)
                     if "position_encoding_type" in cfg.learner.policy
                     else "all"
                 ),
             )
         )
 
-        assert (
-            cfg.learner.head.type == "deterministic"
-        ), "Only deterministic head is supported for now"
-        if cfg.learner.head.type == "deterministic":
-            if not "predict_distribution" in cfg.learner:
-                cfg.learner.predict_distribution = True  # This was the previous default
-
-            self.head = DeterministicHead(
-                input_size=cfg.learner.policy.output_dim,
-                output_size=3
-                * cfg.dataset.pred_horizon,  # This will predict next states of all the points
-                hidden_size=cfg.learner.head.hidden_dim,
-                num_layers=cfg.learner.head.num_layers,
-                action_squash=cfg.learner.head.action_squash,
-                loss_coef=cfg.learner.head.loss_coef,
-                loss_reduction="sum",
-                predict_distribution=cfg.learner.predict_distribution,
-            )
+        self.head = DeterministicHead(
+            input_size=cfg.learner.policy.output_dim,
+            output_size=3
+            * cfg.dataset.pred_horizon,  # This will predict next states of all the points
+            hidden_size=cfg.learner.head.hidden_dim,
+            num_layers=cfg.learner.head.num_layers,
+            action_squash=cfg.learner.head.action_squash,
+            loss_coef=cfg.learner.head.loss_coef,
+            loss_reduction="sum",
+            predict_distribution=cfg.learner.predict_distribution,
+        )
 
     def forward(self, input_data, stddev=None, target=None):
 

@@ -1,8 +1,8 @@
-from dex_aria.utils.file_ops import load_function
+from aina.utils.file_ops import load_function
 
 
 def init_learner(cfg, device):
-    fn = load_function(f"dex_aria.learning.initialize_learner.init_{cfg.learner.name}")
+    fn = load_function(f"aina.learning.initialize_learner.init_{cfg.learner.name}")
     return fn(cfg, device)
 
 
