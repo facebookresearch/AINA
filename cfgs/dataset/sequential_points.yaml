@@ -1,0 +1,17 @@
+_target_: aina.dataset.sequential_points.AllPointsData
+data_dir: ???
+obs_horizon: 10
+pred_horizon: 30
+on_scene: True
+mean_std_norm: True
+sample_points: True
+num_object_points: 500
+use_color: False
+augment: True
+return_next_object_points: True
+return_fingertips: True
+gaussian_noise: True 
+gaussian_noise_to_hand: True
+z_rotation_type: centered # none, centered, wrt_base
+normalize: True
+scale: False

@@ -1,0 +1,65 @@
+# Network configuration
+
+defaults:
+  - task: stewing
+  - dataset: sequential_points
+
+optimizer: 
+  lr: 1e-4
+  weight_decay: 1e-4
+
+# Learning related parameters
+learner:
+  name: vn_point_policy
+  apply_weight_init: False
+
+  supervise_object_points: False
+  predict_distribution: False
+
+  encoder:
+    repr_dim: 64
+    dropout: 0.0
+
+  policy:
+    output_dim: 512
+    n_layer: 4
+    n_head: 2
+    dropout: 0.1
+    use_position_encoding: True
+    position_encoding_type: fingertips # else doesn't matter
+
+  head:
+    type: deterministic
+    hidden_dim: 256
+    num_layers: 2
+    action_squash: False
+    loss_coef: 1.0
+    stddev_schedule: 0.03
+    normalization_scale: 2.0
+
+# Training parameters
+train_epochs: 1001
+root_dir: /home/irmakguzey/Workspace/aina-private
+data_dir: ${root_dir}
+train_dset_split: 0.9
+batch_size: 32
+
+# Environment parameters
+seed: 5
+device: cuda
+num_workers: 16
+
+log: true
+save_frequency: 500
+wandb_project_name: ${learner.name}-${task.name}-${now:%m.%d}
+work_dir: ${root_dir}/aina-trainings
+experiment: ${now:%m-%d}-${now:%H-%M-%S}-${learner.name}-${task.name}
+# hydra configuration - should be received separately
+
+hydra:
+    run:
+        dir: ${work_dir}/out/${now:%Y.%m.%d}/${now:%H-%M-%S}/0
+
+    sweep:
+        dir: ${work_dir}/out/${now:%Y.%m.%d}/${now:%H-%M-%S}
+        subdir: ${hydra.job.num}

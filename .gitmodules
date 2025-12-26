@@ -1,0 +1,12 @@
+[submodule "submodules/co-tracker"]
+	path = submodules/co-tracker
+	url = https://github.com/irmakguzey/co-tracker.git
+[submodule "submodules/Grounded-SAM-2"]
+	path = submodules/Grounded-SAM-2
+	url = https://github.com/IDEA-Research/Grounded-SAM-2
+[submodule "submodules/kinova-control"]
+	path = submodules/kinova-control
+	url = https://github.com/Kinovarobotics/Kinova-kortex2_Gen3_G3L.git
+[submodule "submodules/ability-control"]
+	path = submodules/ability-control
+	url = https://github.com/psyonicinc/ability-hand-api.git
